@@ -1,0 +1,33 @@
+services:
+  proxy:
+    image: caddy:2-alpine@sha256:6aeddd44c3078b0f9a35206472a11420648a79c184603ef95957d0a20044cb2b
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+    tmpfs:
+      - /data
+      - /config
+    restart: unless-stopped
+    init: true
+    security_opt:
+      - no-new-privileges:true
+    depends_on:
+      - brave-search
+
+  brave-search:
+    image: mcp/brave-search@sha256:f58a5c22c1196ec7bd1ca586ce216f2334fc298550ddcf652c0e8adb6d256d78
+    environment:
+      BRAVE_API_KEY: ${BRAVE_API_KEY:?set BRAVE_API_KEY in .env}
+      BRAVE_MCP_TRANSPORT: http
+      BRAVE_MCP_HOST: 0.0.0.0
+      BRAVE_MCP_PORT: "8080"
+      BRAVE_MCP_STATELESS: "true"
+      BRAVE_MCP_LOG_LEVEL: info
+      BRAVE_MCP_ENABLED_TOOLS: brave_web_search brave_news_search brave_llm_context
+    restart: unless-stopped
+    cap_drop:
+      - all
+    init: true
+    security_opt:
+      - no-new-privileges:true

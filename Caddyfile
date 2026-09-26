@@ -1,0 +1,13 @@
+# Subpath per server. /brave/* is stripped, so /brave/mcp reaches the backend /mcp.
+:8080 {
+	handle_path /brave/* {
+		reverse_proxy brave-search:8080 {
+			flush_interval -1
+			transport http {
+				response_header_timeout 2m
+				read_timeout 2m
+				write_timeout 2m
+			}
+		}
+	}
+}
