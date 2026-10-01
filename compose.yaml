@@ -14,6 +14,7 @@ services:
       - no-new-privileges:true
     depends_on:
       - brave-search
+      - wikipedia
 
   brave-search:
     image: mcp/brave-search@sha256:f58a5c22c1196ec7bd1ca586ce216f2334fc298550ddcf652c0e8adb6d256d78
@@ -29,5 +30,18 @@ services:
     cap_drop:
       - all
     init: true
+    security_opt:
+      - no-new-privileges:true
+
+  wikipedia:
+    image: ghcr.io/jermatic1/mcp-wikipedia@sha256:b3b25df3fa2b22b279bf948dcffb09e40ef1af7329db25808dbcef09f849b6d3
+    user: "${UID:-1000}:${GID:-1000}"
+    environment:
+      WIKI_USER_AGENT: ${WIKI_USER_AGENT:?set WIKI_USER_AGENT in .env}
+    volumes:
+      - ./data/wikipedia:/app/data
+    restart: unless-stopped
+    cap_drop:
+      - all
     security_opt:
       - no-new-privileges:true

@@ -4,7 +4,7 @@ These MCP servers sit behind Caddy. Caddy is the only service published on the L
 
 ## Run
 
-Copy `.env.example` to `.env`, set the keys, then start the stack:
+Copy `.env.example` to `.env`, set the keys, set `UID` and `GID` to the output of `id -u` and `id -g`, then start the stack:
 
 ```sh
 docker compose up -d
@@ -15,7 +15,12 @@ docker compose up -d
 | Server | URL | Config |
 | --- | --- | --- |
 | Brave Search | `http://<host>:8080/brave/mcp` | `BRAVE_API_KEY` in `.env` |
+| Wikipedia | `http://<host>:8080/wikipedia/mcp` | `WIKI_USER_AGENT`, `UID`, `GID` in `.env` |
 
 Brave Search provides web search, news search, and LLM context.
 
 Web and news Safe Search uses Brave's default, moderate. It cannot be forced to strict.
+
+Wikipedia provides search and article retrieval over the Vital Articles. `WIKI_USER_AGENT` must include your contact details, which Wikipedia asks clients to send. The first start downloads the articles and builds the index, which takes a while. Later starts are immediate.
+
+Servers that keep state store it under `data/<server>`, owned by `UID` and `GID`.
