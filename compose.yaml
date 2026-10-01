@@ -15,6 +15,7 @@ services:
     depends_on:
       - brave-search
       - wikipedia
+      - weather
 
   brave-search:
     image: mcp/brave-search@sha256:f58a5c22c1196ec7bd1ca586ce216f2334fc298550ddcf652c0e8adb6d256d78
@@ -40,6 +41,21 @@ services:
       WIKI_USER_AGENT: ${WIKI_USER_AGENT:?set WIKI_USER_AGENT in .env}
     volumes:
       - ./data/wikipedia:/app/data
+    restart: unless-stopped
+    cap_drop:
+      - all
+    security_opt:
+      - no-new-privileges:true
+
+  weather:
+    image: ghcr.io/jermatic1/mcp-weather@sha256:acac428168e1f8796e57f708a21614934cf4f04dd7cf45fd6d6e064f1c1bc3f3
+    environment:
+      WEATHER_LATITUDE: ${WEATHER_LATITUDE:?set WEATHER_LATITUDE in .env}
+      WEATHER_LONGITUDE: ${WEATHER_LONGITUDE:?set WEATHER_LONGITUDE in .env}
+      WEATHER_CONTACT: ${WEATHER_CONTACT:?set WEATHER_CONTACT in .env}
+      WEATHER_LOCATION_NAME: ${WEATHER_LOCATION_NAME:-}
+      WEATHER_STATION: ${WEATHER_STATION:-}
+      TZ: ${TZ:-}
     restart: unless-stopped
     cap_drop:
       - all

@@ -17,4 +17,7 @@
 	handle_path /wikipedia/* {
 		import mcp wikipedia:8000
 	}
+	handle_path /weather/* {
+		import mcp weather:8000
+	}
 }
