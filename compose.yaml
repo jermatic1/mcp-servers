@@ -35,7 +35,7 @@ services:
       - no-new-privileges:true
 
   wikipedia:
-    image: ghcr.io/jermatic1/mcp-wikipedia@sha256:b3b25df3fa2b22b279bf948dcffb09e40ef1af7329db25808dbcef09f849b6d3
+    image: ghcr.io/jermatic1/mcp-wikipedia:latest
     user: "${UID:-1000}:${GID:-1000}"
     environment:
       WIKI_USER_AGENT: ${WIKI_USER_AGENT:?set WIKI_USER_AGENT in .env}
@@ -48,7 +48,7 @@ services:
       - no-new-privileges:true
 
   weather:
-    image: ghcr.io/jermatic1/mcp-weather@sha256:acac428168e1f8796e57f708a21614934cf4f04dd7cf45fd6d6e064f1c1bc3f3
+    image: ghcr.io/jermatic1/mcp-weather:latest
     environment:
       WEATHER_LATITUDE: ${WEATHER_LATITUDE:?set WEATHER_LATITUDE in .env}
       WEATHER_LONGITUDE: ${WEATHER_LONGITUDE:?set WEATHER_LONGITUDE in .env}
