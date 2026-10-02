@@ -16,6 +16,7 @@ services:
       - brave-search
       - wikipedia
       - weather
+      - calendar
 
   brave-search:
     image: mcp/brave-search@sha256:f58a5c22c1196ec7bd1ca586ce216f2334fc298550ddcf652c0e8adb6d256d78
@@ -55,6 +56,19 @@ services:
       WEATHER_CONTACT: ${WEATHER_CONTACT:?set WEATHER_CONTACT in .env}
       WEATHER_LOCATION_NAME: ${WEATHER_LOCATION_NAME:-}
       WEATHER_STATION: ${WEATHER_STATION:-}
+      TZ: ${TZ:-}
+    restart: unless-stopped
+    cap_drop:
+      - all
+    security_opt:
+      - no-new-privileges:true
+
+  calendar:
+    image: ghcr.io/jermatic1/mcp-calendar:latest
+    environment:
+      CALENDAR_CLIENT_ID: ${CALENDAR_CLIENT_ID:?set CALENDAR_CLIENT_ID in .env}
+      CALENDAR_CLIENT_SECRET: ${CALENDAR_CLIENT_SECRET:?set CALENDAR_CLIENT_SECRET in .env}
+      CALENDAR_REFRESH_TOKEN: ${CALENDAR_REFRESH_TOKEN:-}
       TZ: ${TZ:-}
     restart: unless-stopped
     cap_drop:

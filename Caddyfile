@@ -20,4 +20,7 @@
 	handle_path /weather/* {
 		import mcp weather:8000
 	}
+	handle_path /calendar/* {
+		import mcp calendar:8000
+	}
 }
